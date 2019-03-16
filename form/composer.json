@@ -1,0 +1,15 @@
+{
+    "name": "sumonselim/ss-php-02",
+    "authors": [
+        {
+            "name": "Muhammad Sumon Molla Selim",
+            "email": "smseleem@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "files": [
+            "helpers/functions.php"
+        ]
+    }
+}

@@ -1,4 +1,10 @@
 <?php
+require_once 'bootstrap.php';
+
+if (!is_logged_in()) {
+    notification('You have to login first.', 'danger');
+    redirect('login');
+}
 
 if (isset($_POST['update'])) {
     if (!empty($_FILES['photo']['name'])) {
@@ -38,5 +44,6 @@ if (isset($_POST['update'])) {
         $stmt->execute();
     }
 
-    $message = 'User updated.';
+    notification('User updated.');
+    redirect('dashboard');
 }

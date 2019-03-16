@@ -1,6 +1,6 @@
 <?php
-session_start();
-unset($_SESSION);
-session_destroy();
+require_once 'bootstrap.php';
+unset($_SESSION['id'], $_SESSION['email'], $_SESSION['role']);
 
-header('Location: login.php');
+notification('You have been logged out.');
+redirect('login');

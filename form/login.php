@@ -1,9 +1,8 @@
 <?php
-session_start();
+require_once 'bootstrap.php';
 
-if (isset($_SESSION['id'], $_SESSION['email'], $_SESSION['role'])) {
-    header('Location: dashboard.php');
-    exit();
+if (is_logged_in()) {
+    redirect('dashboard');
 }
 
 require_once 'partials/_header.php';

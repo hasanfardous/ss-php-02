@@ -1,4 +1,9 @@
 <?php
+require_once 'bootstrap.php';
+
+if (is_logged_in()) {
+    redirect('dashboard');
+}
 
 if (isset($_POST['register'])) {
     if (!empty($_FILES['photo']['name'])) {
@@ -12,7 +17,6 @@ if (isset($_POST['register'])) {
     }
 
     if (!empty($_POST['email']) && !empty($_POST['password'])) {
-        require_once '../database.php';
         $email = trim($_POST['email']);
         $password = trim($_POST['password']);
         $password = password_hash($password, PASSWORD_BCRYPT);
@@ -28,11 +32,14 @@ if (isset($_POST['register'])) {
             $stmt->execute();
             $connection->lastInsertId();
 
-            $message = 'Registration successful.';
+            notification('Registration successful.');
+            redirect('login');
         } catch (Exception $e) {
-            $message = $e->getMessage();
+            notification($e->getMessage(), 'danger');
+            redirect('index');
         }
     } else {
-        $message = 'Please provide all the required information';
+        notification('Please provide all the required information', 'danger');
+        redirect('index');
     }
 }

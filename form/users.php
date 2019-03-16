@@ -1,16 +1,15 @@
 <?php
-require_once '../database.php';
+require_once 'bootstrap.php';
 
-session_start();
-
-if (!isset($_SESSION['id'], $_SESSION['email'], $_SESSION['role'])) {
-    header('Location: login.php');
-    exit();
+if (!is_logged_in()) {
+    notification('You have to login first.', 'danger');
+    redirect('login');
 }
 
-if ($_SESSION['role'] !== 'admin') {
-    header('Location: dashboard.php');
-    exit();
+
+if (!is_admin()) {
+    notification('You are not authorized.', 'danger');
+    redirect('dashboard');
 }
 
 $query = 'SELECT id, email, photo FROM users';
@@ -22,10 +21,11 @@ $users = $stmt->fetchAll();
 require_once 'partials/_header.php';
 ?>
 
-<?php require_once 'partials/_message.php'; ?>
-
 <div class="container">
     <h2>Users List</h2>
+
+    <?php require_once 'partials/_message.php'; ?>
+
     <table class="table table-bordered table-hover">
         <thead>
         <tr>

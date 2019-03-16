@@ -1,10 +1,9 @@
 <?php
-require_once '../database.php';
-session_start();
+require_once 'bootstrap.php';
 
-if (!isset($_SESSION['id'], $_SESSION['email'], $_SESSION['role'])) {
-    header('Location: login.php');
-    exit();
+if (!is_logged_in()) {
+    notification('You have to login first.', 'danger');
+    redirect('login');
 }
 
 $id = (int)$_SESSION['id'];
