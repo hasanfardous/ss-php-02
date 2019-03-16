@@ -1,30 +1,28 @@
 <?php
 require_once '../database.php';
 
+session_start();
+
+if (!isset($_SESSION['id'], $_SESSION['email'], $_SESSION['role'])) {
+    header('Location: login.php');
+    exit();
+}
+
+if ($_SESSION['role'] !== 'admin') {
+    header('Location: dashboard.php');
+    exit();
+}
+
 $query = 'SELECT id, email, photo FROM users';
 $stmt = $connection->query($query);
 $stmt->execute();
 
 $users = $stmt->fetchAll();
-?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PHP User Form</title>
-    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="//getbootstrap.com/docs/4.3/examples/sign-in/signin.css">
-</head>
-<body class="text-center">
 
-<?php if (isset($message)): ?>
-    <div class="alert alert-success">
-        <?php echo $message; ?>
-    </div>
-<?php endif; ?>
+require_once 'partials/_header.php';
+?>
+
+<?php require_once 'partials/_message.php'; ?>
 
 <div class="container">
     <h2>Users List</h2>
@@ -46,9 +44,11 @@ $users = $stmt->fetchAll();
                     <img src="../uploads/photo/<?php echo $user['photo']; ?>" alt="Photo" width="100">
                 </td>
                 <td>
-                    <a href="edit.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info">Edit</a>
-                    <a href="delete.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-danger"
-                       onclick="return confirm('Are you sure?');">Delete</a>
+                    <a href="edit_user.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info">Edit</a>
+                    <?php if ($_SESSION['id'] !== $user['id']): ?>
+                        <a href="delete_user.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-danger"
+                           onclick="return confirm('Are you sure?');">Delete</a>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -56,6 +56,5 @@ $users = $stmt->fetchAll();
     </table>
 </div>
 
-</body>
-</html>
+<?php require_once 'partials/_footer.php'; ?>
 
