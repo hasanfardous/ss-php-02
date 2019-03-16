@@ -6,7 +6,9 @@
             "email": "smseleem@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "phpmailer/phpmailer": "^6.0"
+    },
     "autoload": {
         "files": [
             "helpers/functions.php"

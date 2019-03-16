@@ -9,7 +9,7 @@ if (isset($_POST['login'])) {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
-    $query = 'SELECT id, email, password, role FROM users WHERE email=:email';
+    $query = 'SELECT id, email, password, role, email_verified FROM users WHERE email=:email';
     $stmt = $connection->prepare($query);
     $stmt->bindParam(':email', $email);
     $stmt->execute();
@@ -18,16 +18,22 @@ if (isset($_POST['login'])) {
 
     if ($user) {
         if (password_verify($password, $user['password']) === true) {
-            $message = 'Login successful.';
+            if ((int)$user['email_verified'] === 0) {
+                notification('Verify your email.', 'danger');
+                redirect('login');
+            }
+
             $_SESSION['id'] = $user['id'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
 
-            header('Location: dashboard.php');
+            redirect('dashboard');
         } else {
-            $message = 'Invalid credentials.';
+            notification('Invalid credentials.', 'danger');
+            redirect('login');
         }
     } else {
-        $message = 'Invalid email.';
+        notification('Invalid email.', 'danger');
+        redirect('login');
     }
 }
