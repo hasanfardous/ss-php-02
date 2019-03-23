@@ -27,6 +27,7 @@ require_once 'partials/_header.php';
 
     <hr/>
 
+    <a href="forgot.php">Forgot password?</a>
     <a href="login.php">Login</a>
 </form>
 

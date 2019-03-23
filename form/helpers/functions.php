@@ -46,5 +46,31 @@ if (!function_exists('notification')) {
     }
 }
 
+if (!function_exists('email')) {
+    function email($email, $subject, $body)
+    {
+        try {
+            $mail = new \PHPMailer\PHPMailer\PHPMailer();
+            $mail->SMTPDebug = 2;                                 // Enable verbose debug output
+            $mail->isSMTP();                                      // Set mailer to use SMTP
+            $mail->Host = 'smtp.mailtrap.io';  // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true;                               // Enable SMTP authentication
+            $mail->Username = 'af2a20736cc551';                 // SMTP username
+            $mail->Password = 'c617b024b04e5e';                           // SMTP password
+            $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = 25;                                    // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom('no-reply@ss-php-02.sumon', 'SSB PHP 02');
+            $mail->addAddress($email);
+            $mail->isHTML();                                  // Set email format to HTML
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            $mail->send();
+        } catch (Exception $e) {
+        }
+    }
+}
+
 
 
