@@ -1,17 +1,24 @@
 <?php
 
+namespace App\User1;
+
+use App\DB\DB;
+use App\DB\MySQL;
+
 class User
 {
-    private $email, $password;
+    private $email, $password, $db;
 
-    public function __construct($email, $password)
+    public function __construct($email, $password, DB $db)
     {
         $this->email = strtolower($email);
         $this->password = password_hash($password, PASSWORD_BCRYPT);
+        $this->db = $db;
     }
 
     public function register(): void
     {
+        $this->db->create();
         echo $this->email . ' has registered with password ' . $this->password;
     }
 
@@ -20,6 +27,7 @@ class User
      */
     public function getEmail()
     {
+        $this->db->read();
         return $this->email;
     }
 
@@ -46,25 +54,7 @@ class User
     {
         $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
-
-    private function validate()
-    {
-
-    }
-
-    private function userExists()
-    {
-
-    }
 }
-
-$user1 = new User('Smseleem@gmail.com', '123456');
-$user1->register();
-echo '<hr/>';
-
-$user1->setPassword('654321');
-echo $user1->getPassword();
-echo '<hr/>';
 
 
 

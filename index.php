@@ -1,3 +1,12 @@
+<?php
+require_once 'vendor/autoload.php';
+
+$mysql = new \App\DB\MySQL();
+$pgsql = new \App\DB\PgSQL();
+
+$user = new App\User1\User('smseleem@gmail.com', '123', $mysql);
+$user->register();
+?>
 <!doctype html>
 <html lang="en">
 <head>
